@@ -1,15 +1,26 @@
 <template>
-  <div class="card-tarefa" :class="{concluida: tarefa.concluida}">
+  <div @dblclick="alterarStatus" class="card-tarefa" :class="{concluida: tarefa.concluida}">
     <label>{{tarefa.descricao}}</label>
-    <button>x</button>
+    <button @click="deletarTarefa">x</button>
   </div>
 </template>
 
 <script>
+import barramento from '@/barramento'
+
 export default {
-  props: ['tarefa'],
+  props: ["tarefa", "index"],
   data() {
     return {};
+  },
+  methods: {
+    alterarStatus() {
+      this.tarefa.concluida = !this.tarefa.concluida;
+      barramento.alterarStatus(this.tarefa.concluida);
+    },
+    deletarTarefa() {
+      barramento.deletarTarefa(this.index, this.tarefa);
+    }
   }
 };
 </script>
@@ -30,6 +41,7 @@ export default {
 .card-tarefa.concluida {
   background: rgb(16, 128, 16);
   border-left: 7px solid rgb(21, 95, 2);
+  text-decoration: line-through;
 }
 
 .card-tarefa label {

@@ -4,7 +4,12 @@
 
     </div>
     <div class="lista-tarefas">
-      <tarefa v-for="tarefa in tarefas" :tarefa="tarefa" :key="tarefa.descricao"></tarefa>
+      <tarefa 
+        v-for="(tarefa,i) in tarefas" 
+        :tarefa="tarefa" 
+        :key="i" 
+        :index="i">
+      </tarefa>
     </div>
   </div>
 </template>
@@ -17,12 +22,19 @@ export default {
   components: { tarefa },
   data() {
     return {
-      tarefas: []
+      tarefas: [],
     };
+  },
+  methods:{
+   
   },
   created() {
     barramento.onAdicionarTarefa(tarefa => {
-      this.tarefas.push(tarefa);
+      this.tarefas.push(tarefa)
+    });
+
+    barramento.onDeletarTarefa(index =>{
+      this.tarefas.splice(index,1);
     });
   }
 };
